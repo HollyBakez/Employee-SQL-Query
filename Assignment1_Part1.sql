@@ -1,7 +1,3 @@
-CREATE DATABASE ASSIGNMENT1_PART1;
-
-USE ASSIGNMENT1_PART1;
-
 CREATE TABLE Student (
 	Sname VARCHAR(20) NOT NULL,
 	Sid CHAR(9) NOT NULL,
@@ -16,10 +12,10 @@ CREATE TABLE Course (
 
 /* Enrollment encodes students based on the sid and cid */
 CREATE TABLE Enrollment (
-	Course_sid CHAR(9) NOT NULL,
 	Course_cid CHAR(9) NOT NULL,
-	CONSTRAINT FK_ENROLLMENT_STUDENT FOREIGN KEY (Course_sid) REFERENCES Student (Sid),
-	CONSTRAINT FK_ENROLLMENT_COURSE FOREIGN KEY (Course_cid) REFERENCES Course (Cid)
+	Course_sid CHAR(9) NOT NULL,
+	CONSTRAINT FK_ENROLLMENT_COURSE FOREIGN KEY (Course_cid) REFERENCES Course (Cid),
+	CONSTRAINT FK_ENROLLMENT_STUDENT FOREIGN KEY (Course_sid) REFERENCES Student (Sid)
 );
 
 INSERT INTO Student( Sname, Sid)
@@ -59,7 +55,7 @@ SELECT * FROM Enrollment
 
 
 
-/* Number 1 Answer */
+/*------ Number 1 Answer ------*/
 SELECT DISTINCT Course_sid AS 'Student ID'
 FROM Enrollment
 WHERE Course_cid in ( 
@@ -67,18 +63,17 @@ WHERE Course_cid in (
 	FROM Enrollment
 	GROUP BY Course_cid HAVING count(Course_sid) >1
 );
-	
+/*------------------ */	
 /* Test case 1, inserting another classmate */
 INSERT INTO Student( Sname, Sid)
 VALUES 
-	('Oofer', 000111222);
+	('Oofer', 333111222);
 
 INSERT INTO Enrollment(Course_sid, Course_cid)
 VALUES
-	(000111222, 1502);
+	(333111222, 1502);
                         
 /* Number 2 */
-
 
 
 
