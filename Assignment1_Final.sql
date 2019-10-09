@@ -1,3 +1,10 @@
+/* 
+Holland Ho 
+CPSC 332
+Assignment 1 SQL Script 
+10/8/19
+*/
+
 /* Number 1 Answer */
 SELECT DISTINCT Course_sid AS 'Student ID'
 FROM Enrollment
@@ -17,26 +24,39 @@ FROM
 	Enrollment  ec
 	ON ec.Course_cid = e.Course_cid
 GROUP BY s.sid;
-/* Number 3 */
-SELECT AVG(Hours)
-FROM WORKS_ON 
-WHERE Dno
 
-/* Number 4 */ 
-SELECT Fname + ' ' + Lname AS 'Employees'
-FROM Employee 
-WHERE Dno = (
-	SELECT Dno 
-	FROM Employee
-	WHERE Ssn = (
-		SELECT Essn
-		FROM (
-			SELECT TOP 1 Essn,
-			SUM(Hours) AS Total_Hours
-			FROM WORKS_ON 
-			GROUP BY Essn 
-			ORDER BY Total_Hours
-		DESC
-		) AS SQ
-	)
-);
+/* Number 3 Answer */
+SELECT e.Ssn, d.Dnumber, p.Pname, p.Pnumber, AVG(w.Hours) AS 'Average hours per project'
+FROM EMPLOYEE AS e
+INNER JOIN DEPARTMENT AS d
+ON e.Dno = d.Dnumber
+INNER JOIN PROJECT AS p
+ON p.Dnum = d.Dnumber
+INNER JOIN WORKS_ON AS w
+ON w.Pno = p.Pnumber 
+GROUP BY e.Ssn, d.Dnumber, p.Pname, p.Pnumber;
+
+/* Number 4 Answer */ 
+SELECT e.Fname, e.Lname
+FROM EMPLOYEE AS e
+INNER JOIN DEPARTMENT AS d
+ON d.Dnumber = e.Dno
+INNER JOIN PROJECT AS p
+ON p.Dnum = d.Dnumber 
+INNER JOIN WORKS_ON AS w
+ON w.Pno = p.Pnumber 
+GROUP BY Fname, Lname;
+
+/* Number 5 */
+SELECT a.Fname, a.Lname, a.Dnumber, a.NumOfProjects,
+RANK() OVER (ORDER BY NumOfProjects ASC) AS PRank
+FROM (
+	SELECT e.Fname, e.Lname, d.Dnumber,
+	COUNT(p.Pnumber) AS NumOfProjects
+	FROM EMPLOYEE AS e
+	INNER JOIN DEPARTMENT AS d
+	ON e.Dno = d.Dnumber
+	INNER JOIN PROJECT AS p
+	ON p.Dnum = d.Dnumber
+	GROUP BY e.Fname, e.Lname, d.Dnumber
+) AS a;

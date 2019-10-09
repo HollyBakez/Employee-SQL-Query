@@ -88,6 +88,7 @@ FROM
 	ON ec.Course_cid = e.Course_cid
 GROUP BY s.sid;
 
+
 INSERT INTO Student (Sname, Sid)
 VALUES
 	('Monkas', 887999888);
