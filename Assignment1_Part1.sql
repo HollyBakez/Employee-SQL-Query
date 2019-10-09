@@ -33,7 +33,7 @@ VALUES
 	('BIO 101', 2334),
 	('CPSC 121', 1227),
 	('CPSC 254', 1225),
-	('MATH 150A', 1502)
+	('MATH 150A', 1502);
 
 INSERT INTO Enrollment(Course_sid, Course_cid)
 VALUES 
@@ -74,6 +74,28 @@ VALUES
 	(333111222, 1502);
                         
 /* Number 2 */
+/* student id | number of classmates total*/
 
+SELECT * FROM Enrollment 
+/* Answer Works */
+SELECT s.Sid,
+	COUNT(DISTINCT CASE WHEN ec.Course_sid <> s.Sid THEN ec.Course_sid END) AS 'Total Number of Different Classmates'
+FROM 
+	Student s LEFT JOIN 
+	Enrollment e
+	ON e.Course_sid = s.Sid LEFT JOIN
+	Enrollment  ec
+	ON ec.Course_cid = e.Course_cid
+GROUP BY s.sid;
 
+INSERT INTO Student (Sname, Sid)
+VALUES
+	('Monkas', 887999888);
 
+INSERT INTO Course (Cname, Cid)
+VALUES 
+	('POSC 100', 2145);
+
+INSERT INTO Enrollment (Course_cid, Course_sid)
+VALUES
+	(2145, 887999888);
