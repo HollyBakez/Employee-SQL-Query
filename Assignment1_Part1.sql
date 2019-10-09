@@ -99,3 +99,4 @@ VALUES
 INSERT INTO Enrollment (Course_cid, Course_sid)
 VALUES
 	(2145, 887999888);
+

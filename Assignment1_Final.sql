@@ -17,3 +17,26 @@ FROM
 	Enrollment  ec
 	ON ec.Course_cid = e.Course_cid
 GROUP BY s.sid;
+/* Number 3 */
+SELECT AVG(Hours)
+FROM WORKS_ON 
+WHERE Dno
+
+/* Number 4 */ 
+SELECT Fname + ' ' + Lname AS 'Employees'
+FROM Employee 
+WHERE Dno = (
+	SELECT Dno 
+	FROM Employee
+	WHERE Ssn = (
+		SELECT Essn
+		FROM (
+			SELECT TOP 1 Essn,
+			SUM(Hours) AS Total_Hours
+			FROM WORKS_ON 
+			GROUP BY Essn 
+			ORDER BY Total_Hours
+		DESC
+		) AS SQ
+	)
+);
